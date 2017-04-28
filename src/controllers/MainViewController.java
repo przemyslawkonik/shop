@@ -9,12 +9,14 @@ import java.util.ResourceBundle;
 public class MainViewController implements Initializable {
     @FXML private ProductViewController productViewController;
     @FXML private BasketViewController basketViewController;
+    @FXML private SavedBasketViewController savedBasketViewController;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         productViewController.init(this);
         basketViewController.init(this);
+        savedBasketViewController.init(this);
     }
 
     public ProductViewController getProductViewController() {
@@ -24,4 +26,6 @@ public class MainViewController implements Initializable {
     public BasketViewController getBasketViewController() {
         return basketViewController;
     }
+
+    public SavedBasketViewController getSavedBasketViewController() { return savedBasketViewController; }
 }

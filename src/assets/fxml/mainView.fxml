@@ -22,7 +22,7 @@
                 </Tab>
                 <Tab text="Zapisane koszyki">
                     <content>
-                        <fx:include source="savedBasketView.fxml" />
+                        <fx:include fx:id="savedBasketView" source="savedBasketView.fxml" />
                     </content>
                 </Tab>
             </tabs>
