@@ -1,20 +1,51 @@
 package controllers;
 
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import sample.Basket;
 import sample.Product;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 
 
-public class SavedBasketViewController {
+public class SavedBasketViewController implements Initializable {
+    @FXML private TableView<Basket> savedBasketTableView;
+    @FXML private TableColumn<Basket, String> nameColumn;
+    @FXML private TableColumn<Basket, Integer> quantityColumn;
+    @FXML private TableColumn<Basket, Double> valueColumn;
     private MainViewController mainViewController;
+    private ObservableList<Basket> baskets;
 
+
+    public SavedBasketViewController() {
+        baskets = loadSavedBaskets();
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        savedBasketTableView.setItems(baskets);
+
+        //ustawienie kolumn
+        nameColumn.setCellValueFactory(c-> new SimpleStringProperty(c.getValue().getName()));
+        quantityColumn.setCellValueFactory(c-> new SimpleObjectProperty<Integer>(c.getValue().getProducts().size()));
+        valueColumn.setCellValueFactory(c-> new SimpleObjectProperty<Double>(c.getValue().getTotalValue()));
+    }
 
     public void init(MainViewController main) {
         mainViewController = main;
+    }
+
+    public TableView<Basket> getSavedBasketTableView() {
+        return savedBasketTableView;
     }
 
     private ObservableList<Basket> loadSavedBaskets() {

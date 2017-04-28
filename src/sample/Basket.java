@@ -15,6 +15,7 @@ public class Basket {
 
     //konstruktor
     public Basket(Basket basket) {
+        products = FXCollections.observableArrayList();
         setProducts(basket.getProducts());
         name = basket.getName();
     }
@@ -122,13 +123,7 @@ public class Basket {
             this.products.add(new Product(products.get(i)));
     }
 
-    public ObservableList<Product> getProducts() {
-        ObservableList<Product> p = FXCollections.observableArrayList();
-        for(int i=0; i<products.size(); i++) {
-            p.add(new Product(products.get(i)));
-        }
-        return p;
-    }
+    public ObservableList<Product> getProducts() { return products; }
 
     public String getName() { return name; }
 

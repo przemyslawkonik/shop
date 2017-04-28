@@ -68,6 +68,8 @@ public class BasketViewController implements Initializable {
         currentBasket.getProducts().clear();
         basketTableView.refresh();
         totalValue.setText(""+currentBasket.getTotalValue());
+
+        System.out.println(currentBasket.getProducts().isEmpty());
     }
 
     //obsluga zapisania koszyka
@@ -86,7 +88,12 @@ public class BasketViewController implements Initializable {
         else {
             currentBasket.setName(basketNameField.getText());
             boolean result = currentBasket.save();
-            if (result) alertBox.displayCommunicate("Komunikat", "Twój koszyk został zapisany");
+            if (result) {
+                alertBox.displayCommunicate("Komunikat", "Twój koszyk został zapisany");
+                //zaaktualizowanie listy zapisanych koszykow
+                mainViewController.getSavedBasketViewController().getSavedBasketTableView().getItems().add(new Basket(currentBasket));
+                mainViewController.getSavedBasketViewController().getSavedBasketTableView().refresh();
+            }
             else alertBox.displayCommunicate("Błąd", "Koszyk o podanej nazwie już istnieje!");
         }
     }
