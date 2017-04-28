@@ -1,6 +1,6 @@
 package sample;
 
-import controllers.AlertBoxViewController;
+import controllers.InfoBoxViewController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,9 +14,9 @@ public class AlertBox {
 
 
     public void displayCommunicate(String title, String message) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/alertBoxView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/communicateView.fxml"));
         Parent root = loader.load();
-        AlertBoxViewController alertBoxViewController = loader.getController();
+        InfoBoxViewController infoBoxViewController = loader.getController();
 
         Scene scene = new Scene(root);
         Stage stage = new Stage();
@@ -24,7 +24,7 @@ public class AlertBox {
         stage.initModality(Modality.APPLICATION_MODAL);
 
         stage.setTitle(title);
-        alertBoxViewController.setMessage(message);
+        infoBoxViewController.setMessage(message);
 
         stage.showAndWait();
     }

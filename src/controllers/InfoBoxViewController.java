@@ -12,7 +12,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 
-public class AlertBoxViewController implements Initializable {
+public class InfoBoxViewController implements Initializable {
     @FXML private Button button;
     @FXML private Label label;
 
