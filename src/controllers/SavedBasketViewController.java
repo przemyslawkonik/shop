@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
@@ -42,6 +43,21 @@ public class SavedBasketViewController implements Initializable {
 
     public void init(MainViewController main) {
         mainViewController = main;
+    }
+
+    //obsluga usuniecia zapisanego koszyka
+    public void handleRemoveBasket(ActionEvent event) {
+        //pobranie sciezki do wskazanego koszyka
+        String path = (getClass().getResource("/assets/saved_baskets/")).getPath();
+        path += savedBasketTableView.getSelectionModel().getSelectedItem().getName() + ".txt";
+        File file = new File(path);
+
+
+        //usuwanie pliku i elementu z tablicy
+        file.delete();
+        baskets.remove(savedBasketTableView.getSelectionModel().getSelectedItem());
+        //odswiezenie widoku
+        savedBasketTableView.refresh();
     }
 
     public TableView<Basket> getSavedBasketTableView() {
