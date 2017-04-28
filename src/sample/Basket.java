@@ -2,8 +2,6 @@ package sample;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.paint.Color;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,13 +15,14 @@ public class Basket {
 
     //konstruktor
     public Basket(Basket basket) {
-        products = basket.getProducts();
+        setProducts(basket.getProducts());
         name = basket.getName();
     }
 
     //konstruktor
     public Basket(ObservableList<Product> products) {
-        this.products = products;
+        this.products = FXCollections.observableArrayList();
+        setProducts(products);
     }
 
     //konstruktor
@@ -117,11 +116,18 @@ public class Basket {
     }
 
     public void setProducts(ObservableList<Product> products) {
-        this.products = products;
+        if(!this.products.isEmpty())
+            this.products.clear();
+        for(int i=0; i<products.size(); i++)
+            this.products.add(new Product(products.get(i)));
     }
 
     public ObservableList<Product> getProducts() {
-        return products;
+        ObservableList<Product> p = FXCollections.observableArrayList();
+        for(int i=0; i<products.size(); i++) {
+            p.add(new Product(products.get(i)));
+        }
+        return p;
     }
 
     public String getName() { return name; }

@@ -9,7 +9,7 @@
    <children>
       <VBox alignment="CENTER" spacing="40.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label fx:id="label" text="Label" />
+            <Label fx:id="label" alignment="TOP_LEFT" text="Label" textAlignment="CENTER" wrapText="true" />
             <Button fx:id="button" mnemonicParsing="false" onAction="#handleButton" prefWidth="50.0" text="OK" />
          </children>
          <padding>
