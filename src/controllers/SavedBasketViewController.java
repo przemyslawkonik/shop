@@ -70,6 +70,17 @@ public class SavedBasketViewController implements Initializable {
         }
     }
 
+    public void handleMoveBasket(ActionEvent event) {
+        //pobranie zaznaczonego koszyka
+        Basket basket = new Basket(savedBasketTableView.getSelectionModel().getSelectedItem());
+        //pobranie aktualnego koszyka
+        Basket currentBasket = mainViewController.getBasketViewController().getCurrentBasket();
+
+        //petla dodajaca produkty z zapisanego koszyka do aktualnego
+        for(int i=0; i<basket.getProducts().size(); i++)
+            currentBasket.getProducts().add(basket.getProducts().get(i));
+    }
+
     public TableView<Basket> getSavedBasketTableView() {
         return savedBasketTableView;
     }
