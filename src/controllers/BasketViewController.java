@@ -4,19 +4,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.paint.Color;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
+import sample.AlertBox;
 import sample.Basket;
 import sample.Product;
-import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -78,21 +72,22 @@ public class BasketViewController implements Initializable {
 
     //obsluga zapisania koszyka
     public void handleSaveBasket(ActionEvent event) throws IOException {
+        AlertBox alertBox = new AlertBox();
         //jesli nie podano nazwy koszyka
         if (basketNameField.getText().isEmpty()) {
-            basketNameField.setStyle("-fx-prompt-text-fill: red");
+            alertBox.displayCommunicate("Błąd", "Podaj nazwę koszyka!");
         }
         //jesli koszyk jest pusty
         else if (currentBasket.getProducts().isEmpty()) {
             basketNameField.setStyle(null);
-            displayCommunicate("Twój koszyk jest pusty", Color.RED);
+            alertBox.displayCommunicate("Błąd", "Twój koszyk jest pusty!");
         }
         //proba zapisu
         else {
             currentBasket.setName(basketNameField.getText());
             boolean result = currentBasket.save();
-            if (result) displayCommunicate("Twój koszyk został zapisany", Color.GREEN);
-            else displayCommunicate("Koszyk o podanej nazwie już istnieje", Color.RED);
+            if (result) alertBox.displayCommunicate("Komunikat", "Twój koszyk został zapisany");
+            else alertBox.displayCommunicate("Błąd", "Koszyk o podanej nazwie już istnieje!");
         }
     }
 
@@ -104,26 +99,6 @@ public class BasketViewController implements Initializable {
             list.add(i+1);
 
         return list;
-    }
-
-    private void displayCommunicate(String message, Color color) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/alertBoxView.fxml"));
-        Scene scene = new Scene(loader.load());
-        AlertBoxViewController alertBoxViewController = loader.getController();
-        alertBoxViewController.getLabel().setText(message);
-
-        if(color.equals(Color.GREEN))
-            alertBoxViewController.getLabel().setStyle("-fx-text-fill: green");
-        if(color.equals(Color.RED))
-            alertBoxViewController.getLabel().setStyle("-fx-text-fill: red");
-
-        Stage stage = new Stage();
-        alertBoxViewController.getButton().setOnAction( e -> {
-            stage.close();
-        });
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(scene);
-        stage.showAndWait();
     }
 
     public Basket getCurrentBasket() {
