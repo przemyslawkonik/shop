@@ -13,7 +13,7 @@ import java.io.IOException;
 public class AlertBox {
 
 
-    public void displayCommunicate(String title, String message) throws IOException {
+    public void displayInfo(String title, String message) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/communicateView.fxml"));
         Parent root = loader.load();
         InfoBoxViewController infoBoxViewController = loader.getController();

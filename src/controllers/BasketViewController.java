@@ -77,24 +77,24 @@ public class BasketViewController implements Initializable {
         AlertBox alertBox = new AlertBox();
         //jesli nie podano nazwy koszyka
         if (basketNameField.getText().isEmpty()) {
-            alertBox.displayCommunicate("Błąd", "Podaj nazwę koszyka!");
+            alertBox.displayInfo("Błąd", "Podaj nazwę koszyka!");
         }
         //jesli koszyk jest pusty
         else if (currentBasket.getProducts().isEmpty()) {
             basketNameField.setStyle(null);
-            alertBox.displayCommunicate("Błąd", "Twój koszyk jest pusty!");
+            alertBox.displayInfo("Błąd", "Twój koszyk jest pusty!");
         }
         //proba zapisu
         else {
             currentBasket.setName(basketNameField.getText());
             boolean result = currentBasket.save();
             if (result) {
-                alertBox.displayCommunicate("Komunikat", "Twój koszyk został zapisany");
+                alertBox.displayInfo("Komunikat", "Twój koszyk został zapisany");
                 //zaaktualizowanie listy zapisanych koszykow
                 mainViewController.getSavedBasketViewController().getSavedBasketTableView().getItems().add(new Basket(currentBasket));
                 mainViewController.getSavedBasketViewController().getSavedBasketTableView().refresh();
             }
-            else alertBox.displayCommunicate("Błąd", "Koszyk o podanej nazwie już istnieje!");
+            else alertBox.displayInfo("Błąd", "Koszyk o podanej nazwie już istnieje!");
         }
     }
 
