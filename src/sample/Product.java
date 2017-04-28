@@ -1,10 +1,6 @@
 package sample;
 
 
-import javafx.scene.control.Button;
-
-import java.text.DecimalFormat;
-
 public class Product {
     private String name;
     private double price;
@@ -16,7 +12,6 @@ public class Product {
         this.name = product.getName();
         this.price = product.getPrice();
         this.quantity = product.getQuantity();
-        calculateValue();
     }
 
     //konstruktor
@@ -24,10 +19,8 @@ public class Product {
         this.name = name;
         this.quantity = quantity;
         this.price = price;
-        calculateValue();
     }
 
-    //prywatna
     private void calculateValue() {
         value = quantity * price;
         //zaokraglanie do 2 miejsc po przecinku
@@ -38,14 +31,12 @@ public class Product {
 
     public void increaseQuantity(int val) {
         quantity+=val;
-        calculateValue();
     }
 
     public void decreaseQuantity(int val) {
         quantity-=val;
         if(quantity < 0)
             setQuantity(0);
-        calculateValue();
     }
 
     public void setName(String name) {
@@ -58,7 +49,6 @@ public class Product {
 
     public void setPrice(double price) {
         this.price = price;
-        calculateValue();
     }
 
     public double getPrice() {
@@ -67,7 +57,6 @@ public class Product {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-        calculateValue();
     }
 
     public int getQuantity() {
@@ -79,6 +68,7 @@ public class Product {
     }
 
     public double getValue() {
+        calculateValue();
         return value;
     }
 

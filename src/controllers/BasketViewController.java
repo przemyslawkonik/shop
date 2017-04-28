@@ -1,6 +1,5 @@
 package controllers;
 
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,18 +14,14 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sample.Basket;
 import sample.Product;
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Scanner;
+
 
 public class BasketViewController implements Initializable {
-
     @FXML private TableView<Product> basketTableView;
     @FXML private TableColumn<Product, String> basketColumnName;
     @FXML private TableColumn<Product, Double> basketColumnPrice;
@@ -39,7 +34,6 @@ public class BasketViewController implements Initializable {
     private Basket currentBasket;
 
 
-
     public BasketViewController() {
         currentBasket = new Basket();
     }
@@ -48,18 +42,17 @@ public class BasketViewController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         basketTableView.setItems(currentBasket.getProducts());
         //ustawienie kolumn tabeli
-        basketColumnName.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
-        basketColumnPrice.setCellValueFactory(new PropertyValueFactory<Product, Double>("price"));
-        basketColumnQuantity.setCellValueFactory(new PropertyValueFactory<Product, Integer>("quantity"));
-        basketColumnValue.setCellValueFactory(new PropertyValueFactory<Product, Double>("value"));
+        basketColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        basketColumnPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+        basketColumnQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        basketColumnValue.setCellValueFactory(new PropertyValueFactory<>("value"));
 
         //ustawienie choiceboxa
         basketChoiceBox.setItems(getChoiceBoxData());
         basketChoiceBox.getSelectionModel().select(0);
 
         //ustawienie lacznej wartosci produktow
-        totalValue.setText("0");
-        //totalValue.setText(""+currentBasket.getTotalValue());
+        totalValue.setText(""+currentBasket.getTotalValue());
     }
 
     public void init(MainViewController main) {

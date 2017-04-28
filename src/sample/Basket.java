@@ -1,8 +1,8 @@
 package sample;
 
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 
 public class Basket {
     private ObservableList<Product> products;
@@ -66,7 +66,6 @@ public class Basket {
         }
     }
 
-    //prywatna
     private void calculateTotalValue() {
         totalValue = 0;
         for(Product p : products) {
