@@ -55,7 +55,7 @@ public class ProductViewController implements Initializable {
         mainViewController.getBasketViewController().getTotalValue().setText(""+mainViewController.getBasketViewController().getCurrentBasket().getTotalValue());
     }
 
-    public ObservableList<Product> getProductsData() {
+    private ObservableList<Product> getProductsData() {
         Scanner scanner;
         ObservableList<Product> products;
 
@@ -73,7 +73,7 @@ public class ProductViewController implements Initializable {
         return products;
     }
 
-    public ObservableList<Integer> getChoiceBoxData() {
+    private ObservableList<Integer> getChoiceBoxData() {
         ObservableList<Integer> list = FXCollections.observableArrayList();
 
         final int size = 10;

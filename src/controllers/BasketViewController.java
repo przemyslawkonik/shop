@@ -91,7 +91,7 @@ public class BasketViewController implements Initializable {
         }
     }
 
-    public ObservableList<Integer> getChoiceBoxData() {
+    private ObservableList<Integer> getChoiceBoxData() {
         ObservableList<Integer> list = FXCollections.observableArrayList();
 
         final int size = 10;
