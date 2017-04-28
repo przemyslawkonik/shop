@@ -9,10 +9,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import sample.AlertBox;
 import sample.Basket;
 import sample.Product;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Scanner;
@@ -46,18 +48,26 @@ public class SavedBasketViewController implements Initializable {
     }
 
     //obsluga usuniecia zapisanego koszyka
-    public void handleRemoveBasket(ActionEvent event) {
-        //pobranie sciezki do wskazanego koszyka
-        String path = (getClass().getResource("/assets/saved_baskets/")).getPath();
-        path += savedBasketTableView.getSelectionModel().getSelectedItem().getName() + ".txt";
-        File file = new File(path);
+    public void handleRemoveBasket(ActionEvent event) throws IOException {
+        //wykonaj tylko jesli sa zapisane jakies koszyki
+        if (!baskets.isEmpty()) {
+            //pobranie sciezki do wybranego koszyka
+            String path = (getClass().getResource("/assets/saved_baskets/")).getPath();
+            path += savedBasketTableView.getSelectionModel().getSelectedItem().getName() + ".txt";
+            File file = new File(path);
 
+            //wyswietlenie okna z wyborem (tak lub nie) i zapamietanie decyzji uzytkownika
+            AlertBox alertBox = new AlertBox();
+            boolean result = alertBox.displayChoice("Wybierz", "Czy na pewno chcesz usunąć ten koszyk?");
 
-        //usuwanie pliku i elementu z tablicy
-        file.delete();
-        baskets.remove(savedBasketTableView.getSelectionModel().getSelectedItem());
-        //odswiezenie widoku
-        savedBasketTableView.refresh();
+            if (result) {
+                //usuwanie pliku i elementu z tablicy
+                file.delete();
+                baskets.remove(savedBasketTableView.getSelectionModel().getSelectedItem());
+                //odswiezenie widoku
+                savedBasketTableView.refresh();
+            }
+        }
     }
 
     public TableView<Basket> getSavedBasketTableView() {
