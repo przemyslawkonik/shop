@@ -2,15 +2,23 @@ package sample;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.paint.Color;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 
 public class Basket {
     private ObservableList<Product> products;
     private double totalValue;
+    private String name;
+
 
     //konstruktor
     public Basket(Basket basket) {
         products = basket.getProducts();
+        name = basket.getName();
     }
 
     //konstruktor
@@ -66,6 +74,28 @@ public class Basket {
         }
     }
 
+    public boolean save() throws IOException {
+        String path = (getClass().getResource("/assets/saved_baskets/")).getPath();
+        path += name + ".txt";
+        File file = new File(path);
+
+        if(file.exists()) {
+            //plik o podanej nazwie istnieje
+            return false;
+        } else {
+            file.createNewFile();
+            //zapis danych
+            PrintWriter pw = new PrintWriter(path);
+            for (Product p : products) {
+                pw.println(p.getName());
+                pw.println(p.getQuantity());
+                pw.println(p.getPrice());
+            }
+            pw.close();
+            return true;
+        }
+    }
+
     private void calculateTotalValue() {
         totalValue = 0;
         for(Product p : products) {
@@ -93,4 +123,9 @@ public class Basket {
     public ObservableList<Product> getProducts() {
         return products;
     }
+
+    public String getName() { return name; }
+
+    public void setName(String name) { this.name = name; }
+
 }

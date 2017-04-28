@@ -77,41 +77,22 @@ public class BasketViewController implements Initializable {
     }
 
     //obsluga zapisania koszyka
-    public void handleSaveBasket(ActionEvent event) throws IOException{
-        if (basketNameField.getText().isEmpty())
+    public void handleSaveBasket(ActionEvent event) throws IOException {
+        //jesli nie podano nazwy koszyka
+        if (basketNameField.getText().isEmpty()) {
             basketNameField.setStyle("-fx-prompt-text-fill: red");
-        else {
+        }
+        //jesli koszyk jest pusty
+        else if (currentBasket.getProducts().isEmpty()) {
             basketNameField.setStyle(null);
-            if(currentBasket.getProducts().isEmpty()) {
-                //twoj koszyk jest pusty
-                displayCommunicate("Twój koszyk jest pusty", Color.RED);
-            }
-            else {
-                String path = getClass().getResource("/assets/saved_baskets/").getPath();
-                path += basketNameField.getText() + ".txt";
-                File file = new File(path);
-                if(file.exists()) {
-                    //plik o podanej nazwie istnieje
-                    displayCommunicate("Koszyk o podanej nazwie już istnieje", Color.RED);
-                }
-                else {
-                    boolean c = file.createNewFile();
-                    if(!c) {
-                        //nie udalo sie stworzyc pliku
-                    }
-                    else {
-                        //zapis
-                        PrintWriter pw = new PrintWriter(path);
-                        for(Product p : currentBasket.getProducts()) {
-                            pw.println(p.getName());
-                            pw.println(p.getQuantity());
-                            pw.println(p.getPrice());
-                        }
-                        pw.close();
-                        displayCommunicate("Twój koszyk został zapisany", Color.GREEN);
-                    }
-                }
-            }
+            displayCommunicate("Twój koszyk jest pusty", Color.RED);
+        }
+        //proba zapisu
+        else {
+            currentBasket.setName(basketNameField.getText());
+            boolean result = currentBasket.save();
+            if (result) displayCommunicate("Twój koszyk został zapisany", Color.GREEN);
+            else displayCommunicate("Koszyk o podanej nazwie już istnieje", Color.RED);
         }
     }
 
