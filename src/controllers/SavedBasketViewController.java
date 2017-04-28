@@ -78,7 +78,11 @@ public class SavedBasketViewController implements Initializable {
 
         //petla dodajaca produkty z zapisanego koszyka do aktualnego
         for(int i=0; i<basket.getProducts().size(); i++)
-            currentBasket.getProducts().add(basket.getProducts().get(i));
+            currentBasket.addProduct(basket.getProducts().get(i));
+
+        //odswiezenie widoku
+        mainViewController.getBasketViewController().getTotalValue().setText(""+currentBasket.getTotalValue());
+        mainViewController.getBasketViewController().getBasketTableView().refresh();
     }
 
     public TableView<Basket> getSavedBasketTableView() {

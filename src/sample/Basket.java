@@ -37,7 +37,7 @@ public class Basket {
 
         //przeszukanie listy
         for (int i = 0; i < products.size(); i++) {
-            if (products.get(i).getName() == product.getName()) {
+            if (products.get(i).getName().equals(product.getName())) {
                 found = true;
                 index = i;
                 break;
@@ -49,6 +49,28 @@ public class Basket {
         else {  //jesli go nie ma to go dodaj
             Product p = new Product(product);
             p.setQuantity(quantity);
+            products.add(p);
+        }
+    }
+
+    public void addProduct(Product product) {
+        int index = 0;
+        boolean found = false;
+
+        //przeszukanie listy
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i).getName().equals(product.getName())) {
+                found = true;
+                index = i;
+                break;
+            }
+        }
+        //jesli ten produkt jest na liscie to zwieksz jego ilosc o podana
+        if (found) {
+            int q = product.getQuantity();
+            products.get(index).increaseQuantity(q);
+        } else {  //jesli go nie ma to go dodaj
+            Product p = new Product(product);
             products.add(p);
         }
     }
