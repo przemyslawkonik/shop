@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -25,6 +26,8 @@ import java.util.Scanner;
 
 public class SavedBasketViewController implements Initializable, Refresher, InitController {
     @FXML private TableView<Basket> savedBasketTableView;
+    @FXML private TableView<Product> inspectBasketTableView;
+    @FXML private Label inspectBasketName;
     private MainViewController mainViewController;
     private ObservableList<Basket> savedBaskets;
 
@@ -36,6 +39,8 @@ public class SavedBasketViewController implements Initializable, Refresher, Init
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initSavedBasketTableView();
+        initInspectBasketTableView();
+        addSavedBasketTableViewListener();
     }
 
     //obsluga usuniecia zapisanego koszyka
@@ -122,7 +127,7 @@ public class SavedBasketViewController implements Initializable, Refresher, Init
     @Override
     public void refreshView() {
         savedBasketTableView.refresh();
-
+        inspectBasketTableView.refresh();
     }
 
     @Override
@@ -150,4 +155,42 @@ public class SavedBasketViewController implements Initializable, Refresher, Init
 
         savedBasketTableView.getColumns().addAll(name, quantity, value);
     }
+
+    private void initInspectBasketTableView() {
+        TableColumn<Product, String> name = new TableColumn<>("Nazwa");
+        name.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
+        name.setMinWidth(120);
+        name.setStyle("-fx-alignment: CENTER");
+
+        TableColumn<Product, Double> price = new TableColumn<>("Cena (zł)");
+        price.setCellValueFactory(new PropertyValueFactory<Product, Double>("price"));
+        price.setMinWidth(120);
+        price.setStyle("-fx-alignment: CENTER");
+
+        TableColumn<Product, Integer> quantity = new TableColumn<>("Ilość");
+        quantity.setCellValueFactory(new PropertyValueFactory<Product, Integer>("quantity"));
+        quantity.setMinWidth(120);
+        quantity.setStyle("-fx-alignment: CENTER");
+
+        TableColumn<Product, Double> value = new TableColumn<>("Wartość (zł)");
+        value.setCellValueFactory(new PropertyValueFactory<Product, Double>("value"));
+        value.setMinWidth(120);
+        value.setStyle("-fx-alignment: CENTER");
+
+        inspectBasketTableView.getColumns().addAll(name, price, quantity, value);
+    }
+
+    private void addSavedBasketTableViewListener() {
+        savedBasketTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                inspectBasketTableView.setItems(newValue.getProducts());
+                inspectBasketName.setText(newValue.getName());
+                mainViewController.refreshView();
+            } else {
+                inspectBasketName.setText("");
+                inspectBasketTableView.getItems().clear();
+            }
+        });
+    }
+
 }
