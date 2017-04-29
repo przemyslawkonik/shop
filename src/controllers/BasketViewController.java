@@ -1,5 +1,6 @@
 package controllers;
 
+import interfaces.Refresher;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,7 +16,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 
-public class BasketViewController implements Initializable {
+public class BasketViewController implements Initializable, Refresher {
     @FXML private TableView<Product> basketTableView;
     @FXML private TableColumn<Product, String> basketColumnName;
     @FXML private TableColumn<Product, Double> basketColumnPrice;
@@ -59,15 +60,13 @@ public class BasketViewController implements Initializable {
         int q = basketChoiceBox.getSelectionModel().getSelectedItem();
 
         currentBasket.removeProduct(p,q);
-        basketTableView.refresh();
-        totalValue.setText(""+currentBasket.getTotalValue());
+        mainViewController.refreshView();
     }
 
     //obluga wyczyszenia koszyka
     public void handleClear(ActionEvent event) {
         currentBasket.getProducts().clear();
-        basketTableView.refresh();
-        totalValue.setText(""+currentBasket.getTotalValue());
+        mainViewController.refreshView();
     }
 
     //obsluga zapisania koszyka
@@ -87,35 +86,32 @@ public class BasketViewController implements Initializable {
             boolean exists = false;
             int index = 0;
             //sprawdzamy czy koszyk o podanej nazwie istnieje
-            for (int i=0; i<baskets.size(); i++) {
+            for (int i = 0; i < baskets.size(); i++) {
                 if (baskets.get(i).getName().equals(name)) {
                     exists = true;
                     index = i;
                     break;
                 }
             }
+            currentBasket.setName(name);
             boolean choice = false;
             //jesli koszyk o podanej nazwie istnieje, uzytkownik dokonuje wyboru
             if (exists) {
                 choice = alertBox.displayChoice("Wybór", "Koszyk o podanej nazwie już istnieje. Czy chcesz go nadpisać?");
                 if (choice) {
-                    currentBasket.setName(name);
-                    //zapis
-                    currentBasket.save();
                     alertBox.displayInfo("Komunikat", "Twój koszyk został zapisany");
                     //zaaktualizowanie listy zapisanych koszykow
-                    mainViewController.getSavedBasketViewController().getBaskets().set(index,new Basket(currentBasket));
-                    mainViewController.getSavedBasketViewController().getSavedBasketTableView().refresh();
+                    mainViewController.getSavedBasketViewController().getBaskets().set(index, new Basket(currentBasket));
                 }
             } else {
-                currentBasket.setName(name);
-                //zapis
-                currentBasket.save();
                 alertBox.displayInfo("Komunikat", "Twój koszyk został zapisany");
                 //zaaktualizowanie listy zapisanych koszykow
                 mainViewController.getSavedBasketViewController().getBaskets().add(new Basket(currentBasket));
-                mainViewController.getSavedBasketViewController().getSavedBasketTableView().refresh();
             }
+            //zapis
+            currentBasket.save();
+            //odswiezenie widoku
+            mainViewController.refreshView();
         }
     }
 
@@ -139,5 +135,12 @@ public class BasketViewController implements Initializable {
 
     public Label getTotalValue() {
         return totalValue;
+    }
+
+    @Override
+    public void refreshView() {
+        basketTableView.refresh();
+        totalValue.setText(""+currentBasket.getTotalValue());
+        basketNameField.setText("");
     }
 }

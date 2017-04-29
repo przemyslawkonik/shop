@@ -1,5 +1,6 @@
 package controllers;
 
+import interfaces.Refresher;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,7 +16,7 @@ import java.util.ResourceBundle;
 import java.util.Scanner;
 
 
-public class ProductViewController implements Initializable {
+public class ProductViewController implements Initializable, Refresher {
     @FXML private TableView<Product> productTableView;
     @FXML private TableColumn<Product, String> productColumnName;
     @FXML private TableColumn<Product, Double> productColumnPrice;
@@ -49,10 +50,8 @@ public class ProductViewController implements Initializable {
 
         //dodanie produktu
         mainViewController.getBasketViewController().getCurrentBasket().addProduct(p,q);
-        //odswiezenie danych w tabeli
-        mainViewController.getBasketViewController().getBasketTableView().refresh();
-        //wypisanie calkowitej wartosci koszyka
-        mainViewController.getBasketViewController().getTotalValue().setText(""+mainViewController.getBasketViewController().getCurrentBasket().getTotalValue());
+        //odswiezenie widoku
+        mainViewController.refreshView();
     }
 
     private ObservableList<Product> getProductsData() {
@@ -83,4 +82,8 @@ public class ProductViewController implements Initializable {
         return list;
     }
 
+    @Override
+    public void refreshView() {
+
+    }
 }

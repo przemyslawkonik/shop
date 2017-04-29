@@ -1,12 +1,13 @@
 package controllers;
 
+import interfaces.Refresher;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 
-public class MainViewController implements Initializable {
+public class MainViewController implements Initializable, Refresher {
     @FXML private ProductViewController productViewController;
     @FXML private BasketViewController basketViewController;
     @FXML private SavedBasketViewController savedBasketViewController;
@@ -28,4 +29,11 @@ public class MainViewController implements Initializable {
     }
 
     public SavedBasketViewController getSavedBasketViewController() { return savedBasketViewController; }
+
+    @Override
+    public void refreshView() {
+        productViewController.refreshView();
+        basketViewController.refreshView();
+        savedBasketViewController.refreshView();
+    }
 }

@@ -1,5 +1,6 @@
 package controllers;
 
+import interfaces.Refresher;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -20,7 +21,7 @@ import java.util.ResourceBundle;
 import java.util.Scanner;
 
 
-public class SavedBasketViewController implements Initializable {
+public class SavedBasketViewController implements Initializable, Refresher {
     @FXML private TableView<Basket> savedBasketTableView;
     @FXML private TableColumn<Basket, String> nameColumn;
     @FXML private TableColumn<Basket, Integer> quantityColumn;
@@ -65,7 +66,7 @@ public class SavedBasketViewController implements Initializable {
                 file.delete();
                 baskets.remove(savedBasketTableView.getSelectionModel().getSelectedItem());
                 //odswiezenie widoku
-                savedBasketTableView.refresh();
+                mainViewController.refreshView();
             }
         }
     }
@@ -81,8 +82,7 @@ public class SavedBasketViewController implements Initializable {
             currentBasket.addProduct(basket.getProducts().get(i));
         }
         //odswiezenie widoku
-        mainViewController.getBasketViewController().getTotalValue().setText(""+currentBasket.getTotalValue());
-        mainViewController.getBasketViewController().getBasketTableView().refresh();
+        mainViewController.refreshView();
     }
 
     public TableView<Basket> getSavedBasketTableView() {
@@ -133,4 +133,9 @@ public class SavedBasketViewController implements Initializable {
         return baskets;
     }
 
+    @Override
+    public void refreshView() {
+        savedBasketTableView.refresh();
+
+    }
 }
