@@ -63,39 +63,30 @@ public class BasketViewController implements Initializable, Refresher, InitContr
         else if (currentBasket.getProducts().isEmpty()) {
             alertBox.displayInfo("Błąd", "Twój koszyk jest pusty!");
         } else {
-            //pobranie aktualnych zapisanych koszykow
-            ObservableList<Basket> baskets = mainViewController.getSavedBasketViewController().getSavedBaskets();
-            String name = basketNameField.getText();
-            boolean exists = false;
-            int index = 0;
-            //sprawdzamy czy koszyk o podanej nazwie istnieje
-            for (int i = 0; i < baskets.size(); i++) {
-                if (baskets.get(i).getName().equals(name)) {
-                    exists = true;
-                    index = i;
-                    break;
-                }
-            }
-            currentBasket.setName(name);
-            boolean choice = false;
-            //jesli koszyk o podanej nazwie istnieje, uzytkownik dokonuje wyboru
-            if (exists) {
-                choice = alertBox.displayChoice("Wybór", "Koszyk o podanej nazwie już istnieje. Czy chcesz go nadpisać?");
-                if (choice) {
-                    alertBox.displayInfo("Komunikat", "Twój koszyk został zapisany");
-                    //zaaktualizowanie listy zapisanych koszykow
-                    mainViewController.getSavedBasketViewController().getSavedBaskets().set(index, new Basket(currentBasket));
-                }
-            } else {
-                alertBox.displayInfo("Komunikat", "Twój koszyk został zapisany");
+            currentBasket.setName(basketNameField.getText());
+            //proba zapisu
+            boolean result = currentBasket.save();
+            if (result) {
                 //zaaktualizowanie listy zapisanych koszykow
                 mainViewController.getSavedBasketViewController().getSavedBaskets().add(new Basket(currentBasket));
+            } else {
+                boolean choice = alertBox.displayChoice("Wybór", "Koszyk o podanej nazwie już istnieje. Czy chcesz go nadpisać?");
+                if (choice) {
+                    //zaaktualizowanie listy zapisanych koszykow
+                    ObservableList<Basket> baskets = mainViewController.getSavedBasketViewController().getSavedBaskets();
+                    for (Basket b : baskets) {
+                        if (b.getName().equals(currentBasket.getName())) {
+                            b.setName(currentBasket.getName());
+                            b.setProducts(currentBasket.getProducts());
+                        }
+                    }
+                    //nadpisanie koszyka
+                    currentBasket.overwrite();
+                }
             }
-            //zapis
-            currentBasket.save();
-            //odswiezenie widoku
-            mainViewController.refreshView();
+            alertBox.displayInfo("Komunikat", "Twój koszyk został zapisany");
         }
+        mainViewController.refreshView();
     }
 
     public Basket getCurrentBasket() {

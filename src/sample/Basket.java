@@ -105,17 +105,9 @@ public class Basket {
         File file = new File(path);
         PrintWriter pw;
 
-        if(file.exists()) {
-            //zapis danych
-            pw = new PrintWriter(new FileOutputStream(path, false));
-            for (Product p : products) {
-                pw.println(p.getName());
-                pw.println(p.getQuantity());
-                pw.println(p.getPrice());
-            }
-            pw.close();
+        if (file.exists())
             return false;
-        } else {
+        else {
             file.createNewFile();
             //zapis danych
             pw = new PrintWriter(path);
@@ -127,6 +119,22 @@ public class Basket {
             pw.close();
             return true;
         }
+    }
+
+    public boolean overwrite() throws IOException {
+        String path = (getClass().getResource("/assets/saved_baskets/")).getPath();
+        path += name + ".txt";
+        PrintWriter pw;
+
+        //zapis danych
+        pw = new PrintWriter(new FileOutputStream(path, false));
+        for (Product p : products) {
+            pw.println(p.getName());
+            pw.println(p.getQuantity());
+            pw.println(p.getPrice());
+        }
+        pw.close();
+        return true;
     }
 
     private void calculateTotalValue() {
