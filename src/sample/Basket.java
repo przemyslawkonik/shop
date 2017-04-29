@@ -25,11 +25,13 @@ public class Basket {
     public Basket(ObservableList<Product> products) {
         this.products = FXCollections.observableArrayList();
         setProducts(products);
+        name = "Bez nazwy";
     }
 
     //konstruktor
     public Basket() {
         products = FXCollections.observableArrayList();
+        name = "Bez nazwy";
     }
 
     public void addProduct(Product product, int quantity) {
