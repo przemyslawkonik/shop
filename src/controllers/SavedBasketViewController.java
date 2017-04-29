@@ -82,10 +82,6 @@ public class SavedBasketViewController implements Initializable, Refresher, Init
         mainViewController.refreshView();
     }
 
-    public TableView<Basket> getSavedBasketTableView() {
-        return savedBasketTableView;
-    }
-
     public ObservableList<Basket> getBaskets() {
         return baskets;
     }

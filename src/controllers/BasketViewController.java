@@ -126,14 +126,6 @@ public class BasketViewController implements Initializable, Refresher, InitContr
         return currentBasket;
     }
 
-    public TableView<Product> getBasketTableView() {
-        return basketTableView;
-    }
-
-    public Label getTotalValue() {
-        return totalValue;
-    }
-
     @Override
     public void refreshView() {
         basketTableView.refresh();
