@@ -5,42 +5,49 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.BasketViewController">
-   <children>
-      <VBox layoutX="144.0" layoutY="54.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<ScrollPane fitToWidth="true" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.BasketViewController">
+   <content>
+      <AnchorPane>
          <children>
-            <TableView fx:id="basketTableView" />
-            <HBox alignment="TOP_RIGHT" spacing="2.0">
+            <VBox layoutX="144.0" layoutY="54.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Label text="Łączna wartość:" />
-                  <Label fx:id="totalValue" text="0" />
-                  <Label text="zł" />
+                  <TableView fx:id="basketTableView" />
+                  <HBox alignment="TOP_RIGHT" spacing="2.0">
+                     <children>
+                        <Label text="Łączna wartość:" />
+                        <Label fx:id="totalValue" text="0" />
+                        <Label text="zł" />
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </HBox>
+                  <Separator prefWidth="200.0" />
+                  <HBox alignment="CENTER" spacing="15.0">
+                     <children>
+                        <Label text="Ilość" />
+                        <ChoiceBox fx:id="basketChoiceBox" />
+                        <Button mnemonicParsing="false" onAction="#handleRemoveProduct" text="Usuń" />
+                        <Button mnemonicParsing="false" onAction="#handleClear" text="Wyczyść koszyk" />
+                     </children>
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </HBox>
+                  <Separator />
+                  <HBox alignment="CENTER" spacing="15.0">
+                     <children>
+                        <TextField fx:id="basketNameField" promptText="Podaj nazwę" />
+                        <Button mnemonicParsing="false" onAction="#handleSaveBasket" text="Zapisz koszyk" />
+                     </children>
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </HBox>
+                  <Separator />
                </children>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </HBox>
-            <HBox alignment="CENTER" spacing="15.0">
-               <children>
-                  <Label text="Ilość" />
-                  <ChoiceBox fx:id="basketChoiceBox" />
-                  <Button mnemonicParsing="false" onAction="#handleRemoveProduct" text="Usuń" />
-                  <Button mnemonicParsing="false" onAction="#handleClear" text="Wyczyść koszyk" />
-               </children>
-               <padding>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-               </padding>
-            </HBox>
-            <HBox alignment="CENTER" spacing="15.0">
-               <children>
-                  <TextField fx:id="basketNameField" promptText="Podaj nazwę" />
-                  <Button mnemonicParsing="false" onAction="#handleSaveBasket" text="Zapisz koszyk" />
-               </children>
-               <padding>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-               </padding>
-            </HBox>
+            </VBox>
          </children>
-      </VBox>
-   </children>
-</AnchorPane>
+      </AnchorPane>
+   </content>
+</ScrollPane>
