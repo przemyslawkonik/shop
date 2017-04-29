@@ -3,6 +3,7 @@ package sample;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -100,14 +101,22 @@ public class Basket {
         String path = (getClass().getResource("/assets/saved_baskets/")).getPath();
         path += name + ".txt";
         File file = new File(path);
+        PrintWriter pw;
 
         if(file.exists()) {
-            //plik o podanej nazwie istnieje
+            //zapis danych
+            pw = new PrintWriter(new FileOutputStream(path, false));
+            for (Product p : products) {
+                pw.println(p.getName());
+                pw.println(p.getQuantity());
+                pw.println(p.getPrice());
+            }
+            pw.close();
             return false;
         } else {
             file.createNewFile();
             //zapis danych
-            PrintWriter pw = new PrintWriter(path);
+            pw = new PrintWriter(path);
             for (Product p : products) {
                 pw.println(p.getName());
                 pw.println(p.getQuantity());

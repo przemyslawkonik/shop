@@ -68,8 +68,6 @@ public class BasketViewController implements Initializable {
         currentBasket.getProducts().clear();
         basketTableView.refresh();
         totalValue.setText(""+currentBasket.getTotalValue());
-
-        System.out.println(currentBasket.getProducts().isEmpty());
     }
 
     //obsluga zapisania koszyka
@@ -81,20 +79,43 @@ public class BasketViewController implements Initializable {
         }
         //jesli koszyk jest pusty
         else if (currentBasket.getProducts().isEmpty()) {
-            basketNameField.setStyle(null);
             alertBox.displayInfo("Błąd", "Twój koszyk jest pusty!");
-        }
-        //proba zapisu
-        else {
-            currentBasket.setName(basketNameField.getText());
-            boolean result = currentBasket.save();
-            if (result) {
+        } else {
+            //pobranie aktualnych zapisanych koszykow
+            ObservableList<Basket> baskets = mainViewController.getSavedBasketViewController().getBaskets();
+            String name = basketNameField.getText();
+            boolean exists = false;
+            int index = 0;
+            //sprawdzamy czy koszyk o podanej nazwie istnieje
+            for (int i=0; i<baskets.size(); i++) {
+                if (baskets.get(i).getName().equals(name)) {
+                    exists = true;
+                    index = i;
+                    break;
+                }
+            }
+            boolean choice = false;
+            //jesli koszyk o podanej nazwie istnieje, uzytkownik dokonuje wyboru
+            if (exists) {
+                choice = alertBox.displayChoice("Wybór", "Koszyk o podanej nazwie już istnieje. Czy chcesz go nadpisać?");
+                if (choice) {
+                    currentBasket.setName(name);
+                    //zapis
+                    currentBasket.save();
+                    alertBox.displayInfo("Komunikat", "Twój koszyk został zapisany");
+                    //zaaktualizowanie listy zapisanych koszykow
+                    mainViewController.getSavedBasketViewController().getBaskets().set(index,new Basket(currentBasket));
+                    mainViewController.getSavedBasketViewController().getSavedBasketTableView().refresh();
+                }
+            } else {
+                currentBasket.setName(name);
+                //zapis
+                currentBasket.save();
                 alertBox.displayInfo("Komunikat", "Twój koszyk został zapisany");
                 //zaaktualizowanie listy zapisanych koszykow
-                mainViewController.getSavedBasketViewController().getSavedBasketTableView().getItems().add(new Basket(currentBasket));
+                mainViewController.getSavedBasketViewController().getBaskets().add(new Basket(currentBasket));
                 mainViewController.getSavedBasketViewController().getSavedBasketTableView().refresh();
             }
-            else alertBox.displayInfo("Błąd", "Koszyk o podanej nazwie już istnieje!");
         }
     }
 
