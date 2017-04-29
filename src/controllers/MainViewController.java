@@ -15,9 +15,9 @@ public class MainViewController implements Initializable, Refresher {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        productViewController.init(this);
-        basketViewController.init(this);
-        savedBasketViewController.init(this);
+        productViewController.initController(this);
+        basketViewController.initController(this);
+        savedBasketViewController.initController(this);
     }
 
     public ProductViewController getProductViewController() {

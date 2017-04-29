@@ -12,7 +12,7 @@ public class ChoiceBoxViewController {
     @FXML private Label label;
     private boolean result;
 
-
+    //konstruktor
     public ChoiceBoxViewController() {
         result = false;
     }

@@ -1,5 +1,6 @@
 package controllers;
 
+import interfaces.InitController;
 import interfaces.Refresher;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -21,7 +22,7 @@ import java.util.ResourceBundle;
 import java.util.Scanner;
 
 
-public class SavedBasketViewController implements Initializable, Refresher {
+public class SavedBasketViewController implements Initializable, Refresher, InitController {
     @FXML private TableView<Basket> savedBasketTableView;
     @FXML private TableColumn<Basket, String> nameColumn;
     @FXML private TableColumn<Basket, Integer> quantityColumn;
@@ -42,10 +43,6 @@ public class SavedBasketViewController implements Initializable, Refresher {
         nameColumn.setCellValueFactory(c-> new SimpleStringProperty(c.getValue().getName()));
         quantityColumn.setCellValueFactory(c-> new SimpleObjectProperty<Integer>(c.getValue().getProducts().size()));
         valueColumn.setCellValueFactory(c-> new SimpleObjectProperty<Double>(c.getValue().getTotalValue()));
-    }
-
-    public void init(MainViewController main) {
-        mainViewController = main;
     }
 
     //obsluga usuniecia zapisanego koszyka
@@ -137,5 +134,10 @@ public class SavedBasketViewController implements Initializable, Refresher {
     public void refreshView() {
         savedBasketTableView.refresh();
 
+    }
+
+    @Override
+    public void initController(MainViewController main) {
+        mainViewController = main;
     }
 }

@@ -1,5 +1,6 @@
 package controllers;
 
+import interfaces.InitController;
 import interfaces.Refresher;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,7 +17,7 @@ import java.util.ResourceBundle;
 import java.util.Scanner;
 
 
-public class ProductViewController implements Initializable, Refresher {
+public class ProductViewController implements Initializable, Refresher, InitController {
     @FXML private TableView<Product> productTableView;
     @FXML private TableColumn<Product, String> productColumnName;
     @FXML private TableColumn<Product, Double> productColumnPrice;
@@ -35,10 +36,6 @@ public class ProductViewController implements Initializable, Refresher {
         //ustawienie choiceboxa
         productChoiceBox.setItems(getChoiceBoxData());
         productChoiceBox.getSelectionModel().select(0);
-    }
-
-    public void init(MainViewController main) {
-        mainViewController = main;
     }
 
     //obsluga dodania produktu do koszyka
@@ -85,5 +82,10 @@ public class ProductViewController implements Initializable, Refresher {
     @Override
     public void refreshView() {
 
+    }
+
+    @Override
+    public void initController(MainViewController main) {
+        mainViewController = main;
     }
 }

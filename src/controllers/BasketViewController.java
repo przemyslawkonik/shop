@@ -1,5 +1,6 @@
 package controllers;
 
+import interfaces.InitController;
 import interfaces.Refresher;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,7 +17,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 
-public class BasketViewController implements Initializable, Refresher {
+public class BasketViewController implements Initializable, Refresher, InitController {
     @FXML private TableView<Product> basketTableView;
     @FXML private TableColumn<Product, String> basketColumnName;
     @FXML private TableColumn<Product, Double> basketColumnPrice;
@@ -48,10 +49,6 @@ public class BasketViewController implements Initializable, Refresher {
 
         //ustawienie lacznej wartosci produktow
         totalValue.setText(""+currentBasket.getTotalValue());
-    }
-
-    public void init(MainViewController main) {
-        mainViewController = main;
     }
 
     //obsluga usuniecia produktu z koszyka
@@ -142,5 +139,10 @@ public class BasketViewController implements Initializable, Refresher {
         basketTableView.refresh();
         totalValue.setText(""+currentBasket.getTotalValue());
         basketNameField.setText("");
+    }
+
+    @Override
+    public void initController(MainViewController main) {
+        mainViewController = main;
     }
 }
