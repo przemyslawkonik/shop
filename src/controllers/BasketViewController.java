@@ -19,36 +19,22 @@ import java.util.ResourceBundle;
 
 public class BasketViewController implements Initializable, Refresher, InitController {
     @FXML private TableView<Product> basketTableView;
-    @FXML private TableColumn<Product, String> basketColumnName;
-    @FXML private TableColumn<Product, Double> basketColumnPrice;
-    @FXML private TableColumn<Product, Integer> basketColumnQuantity;
-    @FXML private TableColumn<Product, Double> basketColumnValue;
     @FXML private ChoiceBox<Integer> basketChoiceBox;
     @FXML private Label totalValue;
     @FXML private TextField basketNameField;
     private MainViewController mainViewController;
     private Basket currentBasket;
 
-
+    //konstruktor
     public BasketViewController() {
         currentBasket = new Basket();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        basketTableView.setItems(currentBasket.getProducts());
-        //ustawienie kolumn tabeli
-        basketColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        basketColumnPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
-        basketColumnQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        basketColumnValue.setCellValueFactory(new PropertyValueFactory<>("value"));
-
-        //ustawienie choiceboxa
-        basketChoiceBox.setItems(getChoiceBoxData());
-        basketChoiceBox.getSelectionModel().select(0);
-
-        //ustawienie lacznej wartosci produktow
-        totalValue.setText(""+currentBasket.getTotalValue());
+        initBasketTableView();
+        initBasketChoiceBox();
+        totalValue.setText("0");
     }
 
     //obsluga usuniecia produktu z koszyka
@@ -78,7 +64,7 @@ public class BasketViewController implements Initializable, Refresher, InitContr
             alertBox.displayInfo("Błąd", "Twój koszyk jest pusty!");
         } else {
             //pobranie aktualnych zapisanych koszykow
-            ObservableList<Basket> baskets = mainViewController.getSavedBasketViewController().getBaskets();
+            ObservableList<Basket> baskets = mainViewController.getSavedBasketViewController().getSavedBaskets();
             String name = basketNameField.getText();
             boolean exists = false;
             int index = 0;
@@ -98,28 +84,18 @@ public class BasketViewController implements Initializable, Refresher, InitContr
                 if (choice) {
                     alertBox.displayInfo("Komunikat", "Twój koszyk został zapisany");
                     //zaaktualizowanie listy zapisanych koszykow
-                    mainViewController.getSavedBasketViewController().getBaskets().set(index, new Basket(currentBasket));
+                    mainViewController.getSavedBasketViewController().getSavedBaskets().set(index, new Basket(currentBasket));
                 }
             } else {
                 alertBox.displayInfo("Komunikat", "Twój koszyk został zapisany");
                 //zaaktualizowanie listy zapisanych koszykow
-                mainViewController.getSavedBasketViewController().getBaskets().add(new Basket(currentBasket));
+                mainViewController.getSavedBasketViewController().getSavedBaskets().add(new Basket(currentBasket));
             }
             //zapis
             currentBasket.save();
             //odswiezenie widoku
             mainViewController.refreshView();
         }
-    }
-
-    private ObservableList<Integer> getChoiceBoxData() {
-        ObservableList<Integer> list = FXCollections.observableArrayList();
-
-        final int size = 10;
-        for(int i=0; i<size; i++)
-            list.add(i+1);
-
-        return list;
     }
 
     public Basket getCurrentBasket() {
@@ -136,5 +112,42 @@ public class BasketViewController implements Initializable, Refresher, InitContr
     @Override
     public void initController(MainViewController main) {
         mainViewController = main;
+    }
+
+    private void initBasketTableView() {
+        basketTableView.setItems(currentBasket.getProducts());
+
+        TableColumn<Product, String> name = new TableColumn<>("Nazwa");
+        name.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
+        name.setMinWidth(120);
+        name.setStyle("-fx-alignment: CENTER");
+
+        TableColumn<Product, Double> price = new TableColumn<>("Cena (zł)");
+        price.setCellValueFactory(new PropertyValueFactory<Product, Double>("price"));
+        price.setMinWidth(120);
+        price.setStyle("-fx-alignment: CENTER");
+
+        TableColumn<Product, Integer> quantity = new TableColumn<>("Ilość");
+        quantity.setCellValueFactory(new PropertyValueFactory<Product, Integer>("quantity"));
+        quantity.setMinWidth(120);
+        quantity.setStyle("-fx-alignment: CENTER");
+
+        TableColumn<Product, Double> value = new TableColumn<>("Wartość (zł)");
+        value.setCellValueFactory(new PropertyValueFactory<Product, Double>("value"));
+        value.setMinWidth(120);
+        value.setStyle("-fx-alignment: CENTER");
+
+        basketTableView.getColumns().addAll(name, price, quantity, value);
+    }
+
+    private void initBasketChoiceBox() {
+        ObservableList<Integer> list = FXCollections.observableArrayList();
+
+        final int size = 10;
+        for(int i=0; i<size; i++)
+            list.add(i+1);
+
+        basketChoiceBox.setItems(list);
+        basketChoiceBox.getSelectionModel().select(0);
     }
 }

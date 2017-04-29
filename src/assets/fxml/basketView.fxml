@@ -9,14 +9,7 @@
    <children>
       <VBox layoutX="144.0" layoutY="54.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <TableView fx:id="basketTableView">
-               <columns>
-                  <TableColumn fx:id="basketColumnName" maxWidth="1.7976931348623157E308" minWidth="120.0" prefWidth="-1.0" text="Nazwa" />
-                  <TableColumn fx:id="basketColumnPrice" maxWidth="1.7976931348623157E308" minWidth="120.0" prefWidth="-1.0" text="Cena (zł)" />
-                  <TableColumn fx:id="basketColumnQuantity" maxWidth="1.7976931348623157E308" minWidth="120.0" prefWidth="-1.0" text="Ilość" />
-                  <TableColumn fx:id="basketColumnValue" maxWidth="1.7976931348623157E308" minWidth="120.0" prefWidth="-1.0" text="Wartość (zł)" />
-               </columns>
-            </TableView>
+            <TableView fx:id="basketTableView" />
             <HBox alignment="TOP_RIGHT" spacing="2.0">
                <children>
                   <Label text="Łączna wartość:" />
