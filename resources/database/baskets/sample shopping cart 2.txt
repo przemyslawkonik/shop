@@ -1,0 +1,12 @@
+Musztarda
+2
+8.21
+Mydło
+9
+0.6
+Rzodkiewka
+3
+3.33
+Nóż
+5
+40.75

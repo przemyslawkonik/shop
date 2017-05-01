@@ -1,0 +1,15 @@
+Kapusta
+6
+0.99
+Ziemniak
+2
+2.44
+Banan
+1
+54.2
+﻿Jabłko
+1
+4.32
+Wiosło
+1
+147.34
