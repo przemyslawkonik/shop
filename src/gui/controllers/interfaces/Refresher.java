@@ -1,4 +1,4 @@
-package interfaces;
+package gui.controllers.interfaces;
 
 
 public interface Refresher {
