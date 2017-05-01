@@ -1,7 +1,6 @@
-package controllers;
+package gui.controllers;
 
-import interfaces.InitController;
-import interfaces.Refresher;
+import gui.controllers.interfaces.*;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -13,9 +12,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import sample.AlertBox;
-import sample.Basket;
-import sample.Product;
+import application.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -48,7 +46,8 @@ public class SavedBasketViewController implements Initializable, Refresher, Init
         //wykonaj tylko jesli sa zapisane jakies koszyki
         if (!savedBaskets.isEmpty()) {
             //pobranie sciezki do wybranego koszyka
-            String path = (getClass().getResource("/assets/saved_baskets/")).getPath();
+            //String path = (getClass().getResource("/gui/assets/saved_baskets/")).getPath();
+            String path = "resources/database/baskets/";
             path += savedBasketTableView.getSelectionModel().getSelectedItem().getName() + ".txt";
             File file = new File(path);
 
@@ -88,10 +87,11 @@ public class SavedBasketViewController implements Initializable, Refresher, Init
         ObservableList<Basket> baskets = FXCollections.observableArrayList();
 
         //zaladowanie plikow do tablicy
-        String path = (getClass().getResource("/assets/saved_baskets/")).getPath();
-        File file = new File(path);
+        //String path = (getClass().getResource("/assets/saved_baskets/")).getPath();
+        File file = new File("resources/database/baskets/");
+        //String path = (getClass().getResource("/resources/database/baskets/")).getPath();
+        //File file = new File(path);
         File[] files = file.listFiles();
-
         try {
             //petla zapisujaca koszyki
             for (int i = 0; i < files.length; i++) {

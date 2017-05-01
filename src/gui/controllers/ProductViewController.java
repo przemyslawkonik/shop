@@ -1,8 +1,6 @@
-package controllers;
+package gui.controllers;
 
-import interfaces.InitController;
-import interfaces.Refresher;
-import javafx.beans.property.SimpleObjectProperty;
+import gui.controllers.interfaces.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,7 +10,8 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import sample.Product;
+import application.Product;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Scanner;
@@ -46,8 +45,7 @@ public class ProductViewController implements Initializable, Refresher, InitCont
     private ObservableList<Product> getProductsData() {
         Scanner scanner;
         ObservableList<Product> products;
-
-        scanner = new Scanner(getClass().getResourceAsStream("/assets/product_database.txt"));
+        scanner = new Scanner(getClass().getResourceAsStream("/database/products/product_database.txt"));
         products = FXCollections.observableArrayList();
 
         //wypelnienie listy

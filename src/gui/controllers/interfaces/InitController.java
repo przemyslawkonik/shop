@@ -1,6 +1,6 @@
-package interfaces;
+package gui.controllers.interfaces;
 
-import controllers.MainViewController;
+import gui.controllers.*;
 
 
 public interface InitController {

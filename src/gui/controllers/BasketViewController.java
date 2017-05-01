@@ -1,7 +1,6 @@
-package controllers;
+package gui.controllers;
 
-import interfaces.InitController;
-import interfaces.Refresher;
+import gui.controllers.interfaces.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,9 +8,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import sample.AlertBox;
-import sample.Basket;
-import sample.Product;
+import application.*;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;

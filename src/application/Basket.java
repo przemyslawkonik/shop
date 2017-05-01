@@ -1,7 +1,8 @@
-package sample;
+package application;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -100,9 +101,11 @@ public class Basket {
     }
 
     public boolean save() throws IOException {
-        String path = (getClass().getResource("/assets/saved_baskets/")).getPath();
-        path += name + ".txt";
+        //String path = (getClass().getResource("/assets/saved_baskets/")).getPath();
+        String path = "resources/database/baskets/"+name+".txt";
         File file = new File(path);
+        //path += name + ".txt";
+
         PrintWriter pw;
 
         if (file.exists())
@@ -122,8 +125,8 @@ public class Basket {
     }
 
     public boolean overwrite() throws IOException {
-        String path = (getClass().getResource("/assets/saved_baskets/")).getPath();
-        path += name + ".txt";
+        String path = "resources/database/baskets/"+name+".txt";
+        //path += name + ".txt";
         PrintWriter pw;
 
         //zapis danych

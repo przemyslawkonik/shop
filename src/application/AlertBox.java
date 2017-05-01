@@ -1,7 +1,6 @@
-package sample;
+package application;
 
-import controllers.ChoiceBoxViewController;
-import controllers.InfoBoxViewController;
+import gui.controllers.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,7 +14,7 @@ public class AlertBox {
 
 
     public void displayInfo(String title, String message) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/infoBoxView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/fxml/infoBoxView.fxml"));
         Parent root = loader.load();
         InfoBoxViewController infoBoxViewController = loader.getController();
 
@@ -31,7 +30,7 @@ public class AlertBox {
     }
 
     public boolean displayChoice(String title, String message) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/choiceBoxView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/fxml/choiceBoxView.fxml"));
         Parent root = loader.load();
         ChoiceBoxViewController choiceBoxViewController = loader.getController();
 

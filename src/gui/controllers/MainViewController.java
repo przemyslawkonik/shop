@@ -1,6 +1,6 @@
-package controllers;
+package gui.controllers;
 
-import interfaces.Refresher;
+import gui.controllers.interfaces.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Tab;
