@@ -1,6 +1,7 @@
-package application;
+package tools;
 
-import gui.controllers.*;
+import gui.controllers.ChoiceBoxViewController;
+import gui.controllers.InfoBoxViewController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
