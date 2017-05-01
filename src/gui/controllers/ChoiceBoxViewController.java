@@ -3,8 +3,8 @@ package gui.controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.stage.Stage;
+import javafx.scene.control.*;
+import javafx.stage.*;
 
 
 public class ChoiceBoxViewController {

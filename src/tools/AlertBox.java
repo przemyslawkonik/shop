@@ -1,18 +1,13 @@
 package tools;
 
-import gui.controllers.ChoiceBoxViewController;
-import gui.controllers.InfoBoxViewController;
+import gui.controllers.*;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-
+import javafx.scene.*;
+import javafx.stage.*;
 import java.io.IOException;
 
 
 public class AlertBox {
-
 
     public void displayInfo(String title, String message) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/fxml/infoBoxView.fxml"));

@@ -5,17 +5,17 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<ScrollPane fitToWidth="true" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.BasketViewController">
+<ScrollPane fitToWidth="true" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.CurrentBasketViewController">
    <content>
       <AnchorPane>
          <children>
             <VBox layoutX="144.0" layoutY="54.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <TableView fx:id="basketTableView" />
+                  <TableView fx:id="basketTable" />
                   <HBox alignment="TOP_RIGHT" spacing="2.0">
                      <children>
                         <Label text="Łączna wartość:" />
-                        <Label fx:id="totalValue" text="0" />
+                        <Label fx:id="basketValueField" text="0" />
                         <Label text="zł" />
                      </children>
                      <padding>

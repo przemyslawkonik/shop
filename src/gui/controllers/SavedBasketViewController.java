@@ -1,66 +1,53 @@
 package gui.controllers;
 
+import gui.controllers.creator.Creator;
 import gui.controllers.interfaces.*;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import application.*;
 import tools.*;
 
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Scanner;
 
 
-public class SavedBasketViewController implements Initializable, Refresher, InitController {
-    @FXML private TableView<Basket> savedBasketTableView;
-    @FXML private TableView<Product> inspectBasketTableView;
-    @FXML private Label inspectBasketName;
+public class SavedBasketViewController implements Initializable, Refresher, Init {
+    @FXML private TableView<Basket> savedBasketTable;
+    @FXML private TableView<Product> overviewBasketTable;
+    @FXML private Label overviewBasketNameField;
     private MainViewController mainViewController;
     private ObservableList<Basket> savedBaskets;
 
 
     public SavedBasketViewController() {
-        savedBaskets = loadSavedBaskets();
+        savedBaskets = DataLoader.loadBasketData();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initSavedBasketTableView();
-        initInspectBasketTableView();
-        addSavedBasketTableViewListener();
+        initView();
     }
 
     //obsluga usuniecia zapisanego koszyka
     public void handleRemoveBasket(ActionEvent event) throws IOException {
-        //wykonaj tylko jesli sa zapisane jakies koszyki
-        if (!savedBaskets.isEmpty()) {
-            //pobranie sciezki do wybranego koszyka
-            //String path = (getClass().getResource("/gui/assets/saved_baskets/")).getPath();
-            String path = "resources/database/baskets/";
-            path += savedBasketTableView.getSelectionModel().getSelectedItem().getName() + ".txt";
-            File file = new File(path);
+        //wykonaj tylko jesli sa zapisane jakies koszyki i jesli uzytkownik zaznaczyl jakis koszyk
+        if (!savedBaskets.isEmpty() && !savedBasketTable.getSelectionModel().isEmpty()) {
 
             //wyswietlenie okna z wyborem (tak lub nie) i zapamietanie decyzji uzytkownika
             AlertBox alertBox = new AlertBox();
             boolean result = alertBox.displayChoice("Wybierz", "Czy na pewno chcesz usunąć ten koszyk?");
 
             if (result) {
-                //usuwanie pliku i elementu z tablicy
-                file.delete();
-                savedBaskets.remove(savedBasketTableView.getSelectionModel().getSelectedItem());
+                //usuniecie pliku
+                savedBasketTable.getSelectionModel().getSelectedItem().delete();
+                //usuniecie z widoku
+                savedBaskets.remove(savedBasketTable.getSelectionModel().getSelectedItem());
                 //odswiezenie widoku
                 mainViewController.refreshView();
             }
@@ -69,14 +56,11 @@ public class SavedBasketViewController implements Initializable, Refresher, Init
 
     public void handleMoveBasket(ActionEvent event) {
         //pobranie zaznaczonego koszyka
-        Basket basket = new Basket(savedBasketTableView.getSelectionModel().getSelectedItem());
-        //pobranie aktualnego koszyka
-        Basket currentBasket = mainViewController.getBasketViewController().getCurrentBasket();
-
-        //petla dodajaca produkty z zapisanego koszyka do aktualnego
-        for(int i=0; i<basket.getProducts().size(); i++) {
-            currentBasket.addProduct(basket.getProducts().get(i));
-        }
+        Basket basket = new Basket(savedBasketTable.getSelectionModel().getSelectedItem());
+        //pobranie glownego koszyka
+        Basket currentBasket = mainViewController.getCurrentBasketViewController().getCurrentBasket();
+        //dodanie produktow z zaznaczonego zapisanego koszyka do glownego koszyka
+        currentBasket.add(basket.getProducts());
         //odswiezenie widoku
         mainViewController.refreshView();
     }
@@ -85,51 +69,10 @@ public class SavedBasketViewController implements Initializable, Refresher, Init
         return savedBaskets;
     }
 
-    private ObservableList<Basket> loadSavedBaskets() {
-        ObservableList<Basket> baskets = FXCollections.observableArrayList();
-
-        //zaladowanie plikow do tablicy
-        //String path = (getClass().getResource("/assets/saved_baskets/")).getPath();
-        File file = new File("resources/database/baskets/");
-        //String path = (getClass().getResource("/resources/database/baskets/")).getPath();
-        //File file = new File(path);
-        File[] files = file.listFiles();
-        try {
-            //petla zapisujaca koszyki
-            for (int i = 0; i < files.length; i++) {
-                ObservableList<Product> products = FXCollections.observableArrayList();
-                String basketName;
-                Scanner scanner = new Scanner(new File(files[i].getAbsolutePath()));
-
-                //zapisywanie danych o produktach w poszczegolnym koszyku
-                while (scanner.hasNext()) {
-                    String name = scanner.next();
-                    int quantity = scanner.nextInt();
-                    Double price = Double.parseDouble(scanner.next());
-                    products.add(new Product(name, quantity, price));
-                }
-                scanner.close();
-
-                //zapisanie nazwy koszyka
-                String s = files[i].getName();
-                basketName = s.substring(0, s.length() - 4);
-
-                //wlasciwe dodanie koszyka do listy
-                baskets.add(new Basket(products));
-                baskets.get(i).setName(basketName);
-
-                //czyscimy liste produktow przed nastepna iteracja
-                products.clear();
-            }
-        } catch (FileNotFoundException e) {
-        }
-        return baskets;
-    }
-
     @Override
     public void refreshView() {
-        savedBasketTableView.refresh();
-        inspectBasketTableView.refresh();
+        savedBasketTable.refresh();
+        overviewBasketTable.refresh();
     }
 
     @Override
@@ -137,60 +80,25 @@ public class SavedBasketViewController implements Initializable, Refresher, Init
         mainViewController = main;
     }
 
-    private void initSavedBasketTableView() {
-        savedBasketTableView.setItems(savedBaskets);
+    @Override
+    public void initView() {
+        savedBasketTable.setItems(savedBaskets);
+        savedBasketTable.getColumns().setAll(Creator.createSavedBasketColumns());
 
-        TableColumn<Basket, String> name = new TableColumn<>("Nazwa");
-        name.setCellValueFactory(c-> new SimpleStringProperty(c.getValue().getName()));
-        name.setMinWidth(120);
-        name.setStyle("-fx-alignment: CENTER");
+        overviewBasketTable.getColumns().setAll(Creator.createBasketColumns());
 
-        TableColumn<Basket, Integer> quantity = new TableColumn<>("Ilość produktów");
-        quantity.setCellValueFactory(c-> new SimpleObjectProperty<Integer>(c.getValue().getProducts().size()));
-        quantity.setMinWidth(120);
-        quantity.setStyle("-fx-alignment: CENTER");
-
-        TableColumn<Basket, Double> value = new TableColumn<>("Wartość (zł)");
-        value.setCellValueFactory(c-> new SimpleObjectProperty<Double>(c.getValue().getTotalValue()));
-        value.setMinWidth(120);
-        value.setStyle("-fx-alignment: CENTER");
-
-        savedBasketTableView.getColumns().addAll(name, quantity, value);
+        addOverviewBasketTableListener();
     }
 
-    private void initInspectBasketTableView() {
-        TableColumn<Product, String> name = new TableColumn<>("Nazwa");
-        name.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
-        name.setMinWidth(120);
-        name.setStyle("-fx-alignment: CENTER");
-
-        TableColumn<Product, Double> price = new TableColumn<>("Cena (zł)");
-        price.setCellValueFactory(new PropertyValueFactory<Product, Double>("price"));
-        price.setMinWidth(120);
-        price.setStyle("-fx-alignment: CENTER");
-
-        TableColumn<Product, Integer> quantity = new TableColumn<>("Ilość");
-        quantity.setCellValueFactory(new PropertyValueFactory<Product, Integer>("quantity"));
-        quantity.setMinWidth(120);
-        quantity.setStyle("-fx-alignment: CENTER");
-
-        TableColumn<Product, Double> value = new TableColumn<>("Wartość (zł)");
-        value.setCellValueFactory(new PropertyValueFactory<Product, Double>("value"));
-        value.setMinWidth(120);
-        value.setStyle("-fx-alignment: CENTER");
-
-        inspectBasketTableView.getColumns().addAll(name, price, quantity, value);
-    }
-
-    private void addSavedBasketTableViewListener() {
-        savedBasketTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+    private void addOverviewBasketTableListener() {
+        savedBasketTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                inspectBasketTableView.setItems(newValue.getProducts());
-                inspectBasketName.setText(newValue.getName());
+                overviewBasketTable.setItems(newValue.getProducts());
+                overviewBasketNameField.setText(newValue.getName());
                 mainViewController.refreshView();
             } else {
-                inspectBasketName.setText("");
-                inspectBasketTableView.getItems().clear();
+                overviewBasketNameField.setText("");
+                overviewBasketTable.getItems().clear();
             }
         });
     }

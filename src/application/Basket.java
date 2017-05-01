@@ -7,11 +7,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Iterator;
 
 
 public class Basket {
     private ObservableList<Product> products;
-    private double totalValue;
+    private double value;
     private String name;
 
 
@@ -23,10 +24,10 @@ public class Basket {
     }
 
     //konstruktor
-    public Basket(ObservableList<Product> products) {
+    public Basket(String name, ObservableList<Product> products) {
         this.products = FXCollections.observableArrayList();
+        this.name = name;
         setProducts(products);
-        name = "Bez nazwy";
     }
 
     //konstruktor
@@ -35,35 +36,13 @@ public class Basket {
         name = "Bez nazwy";
     }
 
-    public void addProduct(Product product, int quantity) {
+    public void add(Product p) {
         int index = 0;
         boolean found = false;
 
         //przeszukanie listy
         for (int i = 0; i < products.size(); i++) {
-            if (products.get(i).getName().equals(product.getName())) {
-                found = true;
-                index = i;
-                break;
-            }
-        }
-        //jesli ten produkt jest na liscie to zwieksz jego ilosc o podana
-        if (found)
-            products.get(index).increaseQuantity(quantity);
-        else {  //jesli go nie ma to go dodaj
-            Product p = new Product(product);
-            p.setQuantity(quantity);
-            products.add(p);
-        }
-    }
-
-    public void addProduct(Product product) {
-        int index = 0;
-        boolean found = false;
-
-        //przeszukanie listy
-        for (int i = 0; i < products.size(); i++) {
-            if (products.get(i).getName().equals(product.getName())) {
+            if (products.get(i).getName().equals(p.getName())) {
                 found = true;
                 index = i;
                 break;
@@ -71,21 +50,41 @@ public class Basket {
         }
         //jesli ten produkt jest na liscie to zwieksz jego ilosc o podana
         if (found) {
-            int q = product.getQuantity();
+            int q = p.getQuantity();
             products.get(index).increaseQuantity(q);
-        } else {  //jesli go nie ma to go dodaj
-            Product p = new Product(product);
+        }
+        //jesli go nie ma to go dodaj
+        else {
             products.add(p);
         }
     }
 
-    public void removeProduct(Product product, int quantity) {
+    public void add(ObservableList<Product> products) {
+        //petla zewnetrzna
+        for(Iterator<Product> iterator = products.iterator(); iterator.hasNext(); ) {
+            Product p = iterator.next();
+            //petla wewnetrzna
+            for (Product main : this.products) {
+                //jesli produkt sie powtarza to zwieksz jego wartosc i usun go ze zmiennej ktora jest argumentem tej funkcji
+                if (main.getName().equals(p.getName())) {
+                    main.increaseQuantity(p.getQuantity());
+                    iterator.remove();
+                }
+            }
+        }
+        //dodaj pozostale na liscie produkty
+        for (int i = 0; i < products.size(); i++) {
+            this.products.add(products.get(i));
+        }
+    }
+
+    public void remove(Product p) {
         int index = 0;
         boolean found = false;
 
         //przeszukanie listy
         for(int i=0; i<products.size(); i++) {
-            if(products.get(i).getName() == product.getName()) {
+            if(products.get(i).getName().equals(p.getName())) {
                 found = true;
                 index = i;
                 break;
@@ -93,7 +92,8 @@ public class Basket {
         }
         //jesli ten produkt jest na liscie to zmniejsz jego wartosc o podana
         if(found) {
-            products.get(index).decreaseQuantity(quantity);
+            int q = p.getQuantity();
+            products.get(index).decreaseQuantity(q);
             //jesli ilosc produktu wynosi 0 to usun go z listy
             if(products.get(index).getQuantity() == 0)
                 products.remove(index);
@@ -101,19 +101,16 @@ public class Basket {
     }
 
     public boolean save() throws IOException {
-        //String path = (getClass().getResource("/assets/saved_baskets/")).getPath();
         String path = "resources/database/baskets/"+name+".txt";
         File file = new File(path);
-        //path += name + ".txt";
-
         PrintWriter pw;
 
         if (file.exists())
             return false;
         else {
             file.createNewFile();
-            //zapis danych
             pw = new PrintWriter(path);
+            //zapis danych
             for (Product p : products) {
                 pw.println(p.getName());
                 pw.println(p.getQuantity());
@@ -124,9 +121,8 @@ public class Basket {
         }
     }
 
-    public boolean overwrite() throws IOException {
+    public void overwrite() throws IOException {
         String path = "resources/database/baskets/"+name+".txt";
-        //path += name + ".txt";
         PrintWriter pw;
 
         //zapis danych
@@ -137,27 +133,33 @@ public class Basket {
             pw.println(p.getPrice());
         }
         pw.close();
-        return true;
     }
 
-    private void calculateTotalValue() {
-        totalValue = 0;
+    public void delete() {
+        String path = "resources/database/baskets/";
+        path += name + ".txt";
+        File file = new File(path);
+        file.delete();
+    }
+
+    private void calculateValue() {
+        value = 0;
         for(Product p : products) {
-            totalValue += p.getValue();
+            value += p.getValue();
         }
         //zaokraglenie do 2 miejsc po przecinku
-        totalValue *= 1000;
-        totalValue = Math.round(totalValue);
-        totalValue /= 1000;
+        value *= 1000;
+        value = Math.round(value);
+        value /= 1000;
     }
 
-    public double getTotalValue() {
-        calculateTotalValue();
-        return totalValue;
+    public double getValue() {
+        calculateValue();
+        return value;
     }
 
-    public void setTotalValue(double totalValue) {
-        this.totalValue = totalValue;
+    public void setValue(double totalValue) {
+        this.value = totalValue;
     }
 
     public void setProducts(ObservableList<Product> products) {

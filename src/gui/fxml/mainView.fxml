@@ -15,9 +15,9 @@
                         <fx:include fx:id="productView" source="productView.fxml" />
                     </content>
                 </Tab>
-                <Tab fx:id="basketTab" text="Koszyk">
+                <Tab fx:id="currentBasketTab" text="Koszyk">
                     <content>
-                        <fx:include fx:id="basketView" source="basketView.fxml" />
+                        <fx:include fx:id="currentBasketView" source="currentBasketView.fxml" />
                     </content>
                 </Tab>
                 <Tab fx:id="savedBaskedTab" text="Zapisane koszyki">

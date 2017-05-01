@@ -1,8 +1,9 @@
 package gui.controllers.interfaces;
 
-import gui.controllers.*;
+import gui.controllers.MainViewController;
 
 
-public interface InitController {
+public interface Init {
     void initController(MainViewController main);
+    void initView();
 }

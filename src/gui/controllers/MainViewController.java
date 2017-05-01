@@ -9,22 +9,42 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 
-public class MainViewController implements Initializable, Refresher {
+public class MainViewController implements Initializable, Refresher, Init{
     @FXML private ProductViewController productViewController;
-    @FXML private BasketViewController basketViewController;
+    @FXML private CurrentBasketViewController currentBasketViewController;
     @FXML private SavedBasketViewController savedBasketViewController;
-    @FXML private Tab basketTab;
+    @FXML private Tab currentBasketTab;
     @FXML private Tab savedBaskedTab;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        productViewController.initController(this);
-        basketViewController.initController(this);
-        savedBasketViewController.initController(this);
+        initView();
+        initController(this);
+    }
+
+    @Override
+    public void initController(MainViewController main) {
+        productViewController.initController(main);
+        currentBasketViewController.initController(main);
+        savedBasketViewController.initController(main);
+    }
+
+    @Override
+    public void initView() {
         //wyswietlanie wartosci koszyka
-        basketTab.setText("Koszyk ("+basketViewController.getCurrentBasket().getTotalValue()+"zł)");
+        currentBasketTab.setText("Koszyk ("+currentBasketViewController.getCurrentBasket().getValue()+"zł)");
         //wyswietlanie ilosci zapisanych koszykow
+        savedBaskedTab.setText("Zapisane koszyki ("+savedBasketViewController.getSavedBaskets().size()+")");
+    }
+
+    @Override
+    public void refreshView() {
+        productViewController.refreshView();
+        currentBasketViewController.refreshView();
+        savedBasketViewController.refreshView();
+
+        currentBasketTab.setText("Koszyk ("+currentBasketViewController.getCurrentBasket().getValue()+"zł)");
         savedBaskedTab.setText("Zapisane koszyki ("+savedBasketViewController.getSavedBaskets().size()+")");
     }
 
@@ -32,19 +52,8 @@ public class MainViewController implements Initializable, Refresher {
         return productViewController;
     }
 
-    public BasketViewController getBasketViewController() {
-        return basketViewController;
-    }
+    public CurrentBasketViewController getCurrentBasketViewController() {return currentBasketViewController; }
 
     public SavedBasketViewController getSavedBasketViewController() { return savedBasketViewController; }
 
-    @Override
-    public void refreshView() {
-        productViewController.refreshView();
-        basketViewController.refreshView();
-        savedBasketViewController.refreshView();
-
-        basketTab.setText("Koszyk ("+basketViewController.getCurrentBasket().getTotalValue()+"zł)");
-        savedBaskedTab.setText("Zapisane koszyki ("+savedBasketViewController.getSavedBaskets().size()+")");
-    }
 }
