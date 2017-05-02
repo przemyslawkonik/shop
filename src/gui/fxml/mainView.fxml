@@ -25,6 +25,11 @@
                         <fx:include fx:id="savedBasketView" source="savedBasketView.fxml" />
                     </content>
                 </Tab>
+                <Tab fx:id="orderTab" text="Lista zamówień">
+                    <content>
+                        <fx:include fx:id="orderView" source="orderView.fxml" />
+                    </content>
+                </Tab>
             </tabs>
         </TabPane>
     </children>

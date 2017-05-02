@@ -1,11 +1,14 @@
 package gui.controllers.creator;
 
 import application.Basket;
+import application.Order;
 import application.Product;
+import enumeration.Status;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 
@@ -75,6 +78,33 @@ public class Creator {
         value.setStyle("-fx-alignment: CENTER");
 
         columns.addAll(name, quantity, value);
+        return columns;
+    }
+
+    public static ObservableList<TableColumn<Order, ?>> createOrderColumns() {
+        ObservableList<TableColumn<Order, ?>> columns = FXCollections.observableArrayList();
+
+        TableColumn<Order, Integer> id = new TableColumn<>("Nr zamówienia");
+        id.setCellValueFactory(c-> new SimpleObjectProperty<Integer>(c.getValue().getId()));
+        id.setMinWidth(120);
+        id.setStyle("-fx-alignment: CENTER");
+
+        TableColumn<Order, String> date = new TableColumn<>("Data złożenia");
+        date.setCellValueFactory(c-> new SimpleStringProperty(c.getValue().getDate()));
+        date.setMinWidth(120);
+        date.setStyle("-fx-alignment: CENTER");
+
+        TableColumn<Order, Status> status = new TableColumn<>("Status");
+        status.setCellValueFactory(c-> new SimpleObjectProperty<Status>(c.getValue().getStatus()));
+        status.setMinWidth(120);
+        status.setStyle("-fx-alignment: CENTER");
+
+        TableColumn<Order, Double> value = new TableColumn<>("Wartość");
+        value.setCellValueFactory(c-> new SimpleObjectProperty<Double>(c.getValue().getValue()));
+        value.setMinWidth(120);
+        value.setStyle("-fx-alignment: CENTER");
+
+        columns.addAll(id, date, status, value);
         return columns;
     }
 }

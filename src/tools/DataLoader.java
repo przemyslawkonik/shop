@@ -2,12 +2,17 @@ package tools;
 
 
 import application.Basket;
+import application.Order;
 import application.Product;
+import enumeration.Status;
+import gui.controllers.interfaces.Init;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+
+import static enumeration.Status.ZREALIZOWANE;
 
 public class DataLoader {
 
@@ -67,6 +72,50 @@ public class DataLoader {
         } catch (FileNotFoundException e) {
         }
         return baskets;
+    }
+
+    public static ObservableList<Order> loadOrderData() {
+        ObservableList<Order> orders = FXCollections.observableArrayList();
+
+        //zaladowanie plikow do tablicy
+        File file = new File("resources/database/orders/");
+        File[] files = file.listFiles();
+        try {
+            //petla zapisujaca zamowienia
+            for (int i = 0; i < files.length; i++) {
+                int id;
+                String date;
+                Status status = Status.BRAK;
+                ObservableList<Product> products = FXCollections.observableArrayList();
+                Scanner scanner = new Scanner(new File(files[i].getAbsolutePath()));
+
+                //odczyt danych
+                date = scanner.nextLine();
+                String st = scanner.next();
+                if (st.equals(Status.ZREALIZOWANE.toString()))
+                    status = Status.ZREALIZOWANE;
+
+                while (scanner.hasNext()) {
+                    String name = scanner.next();
+                    int quantity = scanner.nextInt();
+                    Double price = Double.parseDouble(scanner.next());
+                    products.add(new Product(name, quantity, price));
+                }
+                scanner.close();
+
+                //zapisanie id zamowienia
+                String s = files[i].getName();
+                id = Integer.parseInt(s.substring(0, s.length() - 4));
+
+                //wlasciwe dodanie zamowienia do listy
+                Basket basket = new Basket();
+                basket.add(products);
+
+                orders.add(new Order(basket, id, date, status));
+            }
+        } catch (FileNotFoundException e) {
+        }
+        return orders;
     }
 
     public static ObservableList<Integer> loadIntegerData() {
