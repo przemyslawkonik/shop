@@ -65,9 +65,6 @@ public class DataLoader {
 
                 //wlasciwe dodanie koszyka do listy
                 baskets.add(new Basket(basketName, products));
-
-                //czyscimy liste produktow przed nastepna iteracja
-                products.clear();
             }
         } catch (FileNotFoundException e) {
         }
