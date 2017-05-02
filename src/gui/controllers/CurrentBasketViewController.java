@@ -43,9 +43,15 @@ public class CurrentBasketViewController implements Initializable, Refresher, In
     }
 
     //obluga wyczyszenia koszyka
-    public void handleClear(ActionEvent event) {
-        currentBasket.getProducts().clear();
-        mainViewController.refreshView();
+    public void handleClear(ActionEvent event) throws IOException {
+        if (!currentBasket.getProducts().isEmpty()) {
+            AlertBox alertBox = new AlertBox();
+            boolean result = alertBox.displayChoice("Wybierz", "Czy na pewno chcesz wyczyścić swój koszyk?");
+            if (result) {
+                currentBasket.getProducts().clear();
+                mainViewController.refreshView();
+            }
+        }
     }
 
     //obsluga zapisania koszyka
