@@ -86,7 +86,6 @@ public class SavedBasketViewController implements Initializable, Refresher, Init
         savedBasketTable.getColumns().setAll(Creator.createSavedBasketColumns());
 
         overviewBasketTable.getColumns().setAll(Creator.createBasketColumns());
-
         addOverviewBasketTableListener();
     }
 

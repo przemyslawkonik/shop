@@ -85,6 +85,32 @@ public class CurrentBasketViewController implements Initializable, Refresher, In
         mainViewController.refreshView();
     }
 
+    public void handleSubmitOrder(ActionEvent event) throws IOException {
+        AlertBox alertBox = new AlertBox();
+        boolean result = alertBox.displayChoice("Wybór", "Czy na pewno chcesz złożyć zamówienie?");
+        if(result) {
+            Basket basket = new Basket(currentBasket);
+            Order order = new Order(basket);
+            ObservableList<Order> orders = mainViewController.getOrderViewController().getOrders();
+
+            //zapewnienie unikalnosci id zamowienia
+            for(int i=0; i< orders.size(); i++) {
+                if(order.getId() != orders.get(i).getId())
+                    continue;
+                else {
+                    i=0;
+                    order.generateId();
+                }
+            }
+            //zapis jako plik
+            order.save();
+            //dodanie zamowienia do tabeli
+            orders.add(order);
+            mainViewController.refreshView();
+            alertBox.displayInfo("Komunikat", "Twoje zamówienie zostało zrealizowane");
+        }
+    }
+
     public Basket getCurrentBasket() {
         return currentBasket;
     }

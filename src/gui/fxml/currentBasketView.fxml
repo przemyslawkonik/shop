@@ -29,6 +29,7 @@
                         <ChoiceBox fx:id="basketChoiceBox" />
                         <Button mnemonicParsing="false" onAction="#handleRemoveProduct" text="Usuń" />
                         <Button mnemonicParsing="false" onAction="#handleClear" text="Wyczyść koszyk" />
+                        <Button mnemonicParsing="false" onAction="#handleSubmitOrder" text="Zamów" />
                      </children>
                      <padding>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

@@ -13,8 +13,10 @@ public class MainViewController implements Initializable, Refresher, Init{
     @FXML private ProductViewController productViewController;
     @FXML private CurrentBasketViewController currentBasketViewController;
     @FXML private SavedBasketViewController savedBasketViewController;
+    @FXML private OrderViewController orderViewController;
     @FXML private Tab currentBasketTab;
     @FXML private Tab savedBaskedTab;
+    @FXML private Tab orderTab;
 
 
     @Override
@@ -28,6 +30,7 @@ public class MainViewController implements Initializable, Refresher, Init{
         productViewController.initController(main);
         currentBasketViewController.initController(main);
         savedBasketViewController.initController(main);
+        orderViewController.initController(main);
     }
 
     @Override
@@ -36,6 +39,8 @@ public class MainViewController implements Initializable, Refresher, Init{
         currentBasketTab.setText("Koszyk ("+currentBasketViewController.getCurrentBasket().getValue()+"zł)");
         //wyswietlanie ilosci zapisanych koszykow
         savedBaskedTab.setText("Zapisane koszyki ("+savedBasketViewController.getSavedBaskets().size()+")");
+        //wyswietlanie ilosci zamowien
+        orderTab.setText("Lista zamówień ("+getOrderViewController().getOrders().size()+")");
     }
 
     @Override
@@ -43,9 +48,11 @@ public class MainViewController implements Initializable, Refresher, Init{
         productViewController.refreshView();
         currentBasketViewController.refreshView();
         savedBasketViewController.refreshView();
+        orderViewController.refreshView();
 
         currentBasketTab.setText("Koszyk ("+currentBasketViewController.getCurrentBasket().getValue()+"zł)");
         savedBaskedTab.setText("Zapisane koszyki ("+savedBasketViewController.getSavedBaskets().size()+")");
+        orderTab.setText("Lista zamówień ("+getOrderViewController().getOrders().size()+")");
     }
 
     public ProductViewController getProductViewController() {
@@ -55,5 +62,7 @@ public class MainViewController implements Initializable, Refresher, Init{
     public CurrentBasketViewController getCurrentBasketViewController() {return currentBasketViewController; }
 
     public SavedBasketViewController getSavedBasketViewController() { return savedBasketViewController; }
+
+    public OrderViewController getOrderViewController() { return orderViewController; }
 
 }
