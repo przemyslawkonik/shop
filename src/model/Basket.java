@@ -101,6 +101,9 @@ public class Basket {
     }
 
     public boolean save() throws IOException {
+        if(!new File("resources/database/baskets").exists()) {
+            new File("resources/database/baskets").mkdir();
+        }
         String path = "resources/database/baskets/"+name+".txt";
         File file = new File(path);
         PrintWriter pw;

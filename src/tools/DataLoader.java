@@ -36,6 +36,9 @@ public class DataLoader {
     public static ObservableList<Basket> loadBasketData() {
         ObservableList<Basket> baskets = FXCollections.observableArrayList();
 
+        if(!new File("resources/database/baskets").exists()) {
+            return baskets;
+        }
         //zaladowanie plikow do tablicy
         File file = new File("resources/database/baskets/");
         File[] files = file.listFiles();
@@ -71,6 +74,9 @@ public class DataLoader {
         ObservableList<Order> orders = FXCollections.observableArrayList();
 
         //zaladowanie plikow do tablicy
+        if(!new File("resources/database/orders").exists()) {
+            return orders;
+        }
         File file = new File("resources/database/orders/");
         File[] files = file.listFiles();
         try {

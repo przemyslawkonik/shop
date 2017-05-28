@@ -40,6 +40,9 @@ public class Order {
     }
 
     public void save() throws IOException {
+        if(!new File("resources/database/orders").exists()) {
+            new File("resources/database/orders").mkdir();
+        }
         String path = "resources/database/orders/" + id + ".txt";
         File file = new File(path);
         PrintWriter pw;
